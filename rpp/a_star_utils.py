@@ -1,3 +1,6 @@
+import numpy as np
+
+
 def is_unvisited_and_unblocked(coords, state):
     """
     Checks if a cell is not blocked and not yet visited.
@@ -64,7 +67,7 @@ def neighbourhood(coords, num_rows, num_cols, nbhd_type="compass", parent_coords
 
         # Remove cells outside boundaries
         possible_cells = [cell for cell in possible_cells if
-                          cell[0] >= 0 and cell[1] >= 0 and cell[0] <= num_rows - 1 and cell[1] <= num_cols - 1]
+                          0 <= cell[0] <= num_rows - 1 and 0 <= cell[1] <= num_cols - 1]
 
         return possible_cells
 
@@ -77,8 +80,7 @@ def neighbourhood(coords, num_rows, num_cols, nbhd_type="compass", parent_coords
         cell = tuple(np.array(coords) + (np.array(coords) - np.array(parent_coords)))
 
         # Check if the node is valid
-        possible_cells = [cell] if cell[0] >= 0 and cell[1] >= 0 and cell[0] <= num_rows - 1 and cell[
-            1] <= num_cols - 1 else []
+        possible_cells = [cell] if 0 <= cell[0] <= num_rows - 1 and 0 <= cell[1] <= num_cols - 1 else []
 
         return possible_cells
 
