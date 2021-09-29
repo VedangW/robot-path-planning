@@ -1,4 +1,5 @@
 import numpy as np
+import scipy.spatial.distance as dist
 
 
 def is_unvisited_and_unblocked(coords, state):
@@ -128,3 +129,61 @@ def get_valid_children(coords, parent, num_rows, num_cols, state):
     valid_children = [cell for cell in nbhd if is_unvisited_and_unblocked(cell, state)]
 
     return valid_children
+
+
+def grid_path(current_node):
+    """
+    Recursively finds the path from the leaf to the root node in the A* search tree.
+
+    Parameters
+    ----------
+    current_node: Node
+      Node in the A* search tree.
+
+    Returns
+    -------
+    planned_path: List[(int, int)]
+      Path from the root node to this leaf node
+    """
+
+    path = []
+
+    # Recursively travel up to the root
+    current = current_node
+
+    while current is not None:
+        path.append(current.position)
+        current = current.parent
+
+    # Reverse and return
+    return path[::-1]
+
+
+def heuristic(name, start, end):
+    """
+    Returns the heuristic (distance) between the start and end cells.
+
+    Parameters
+    ----------
+    name: str
+      Can be `'euclidean'`, `'manhattan'`, or `'chebyshev'`.
+    start: (int, int)
+      Coordinates of the start cell
+    end: (int, int)
+      Coordinates of the end cell
+
+    Returns
+    -------
+    distance: float or int
+      Distance based on which heuristic is being used.
+    """
+
+    if name == "euclidean":
+        return dist.euclidean(start, end)
+    elif name == "manhattan":
+        return dist.cityblock(start, end)
+    elif name == "chebyshev":
+        return dist.chebyshev(start, end)
+
+    # If heuristic is unknown, raise error
+    raise NotImplementedError("Unknown heuristic:", name)
