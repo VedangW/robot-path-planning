@@ -1,6 +1,6 @@
 def is_unvisited_and_unblocked(coords, state):
     """
-    Checks if a cell is blocked or visited already.
+    Checks if a cell is not blocked and not yet visited.
 
     Parameters
     ----------
@@ -17,7 +17,7 @@ def is_unvisited_and_unblocked(coords, state):
 
     Returns
     -------
-    True if blocked or visited else False
+    True if not blocked and not visited else False
     """
 
     # Get coordinates
