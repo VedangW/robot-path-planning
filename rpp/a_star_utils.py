@@ -187,3 +187,29 @@ def heuristic(name, start, end):
 
     # If heuristic is unknown, raise error
     raise NotImplementedError("Unknown heuristic:", name)
+
+
+def is_open_cell(cell, knowledge):
+    """
+    Checks if a cell is open, i.e., has 3 or more unblocked neighbours.
+
+    Parameters
+    ----------
+    cell: (int, int)
+        Coordinates of the cell for which to check
+    knowledge: 2D np.array
+        Represents the knowledge of the agent. knowledge[x][y] = 1 if
+        the agent knows there exists a block at position (x, y) and is 0 otherwise.
+    """
+
+    # Get neighbourhood of the cell
+    nbhd = neighbourhood(cell, knowledge.shape[0], knowledge.shape[1])
+
+    # Retain only the unblocked ones
+    unblocked = [nbr for nbr in nbhd if knowledge[nbr[0]][nbr[1]] != 1]
+
+    # Check length of unblocked cells
+    if len(unblocked) >= 3:
+        return True
+
+    return False

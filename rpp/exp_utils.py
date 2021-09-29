@@ -45,14 +45,14 @@ def generate_gridworld(shape, block_prob):
     Parameters
     ----------
     shape: (int, int)
-    Number of rows and columns in the required gridworld
+        Number of rows and columns in the required gridworld
     block_prob: float
-    Each cell is blocked with a probability p = block_prob
+        Each cell is blocked with a probability p = block_prob
 
     Returns
     -------
     grid_world: 2D np.array
-    Grid with each cell blocked with a probability `block_prob`.
+        Grid with each cell blocked with a probability `block_prob`.
     """
 
     num_rows, num_cols = shape
