@@ -317,14 +317,40 @@ class RepeatedAStar:
         return full_path
 
     def total_cells_processed(self):
+        """
+        Returns total number of Nodes popped from the Fringe across each run of A* search.
+        """
+
         return sum(self.total_cells_processed_by_run)
 
     def total_backtracked_cells(self):
+        """
+        Returns total number of cells backtracked to the start of a tunnel.
+        """
+
         flat_list = [item for sublist in self.backtracks for item in sublist]
         return len(flat_list)
 
     def search(self, start, goal, grid, heuristic_type,
                max_steps_astar=None, max_steps_repeated=None):
+        """
+        Performs the repeated search on a grid.
+
+        Parameters
+        ----------
+        start: (int, int)
+          Coordinates of the start node
+        goal: (int, int)
+          Coordinates of the goal node
+        grid: 2D np.array
+          Original gridworld on which to perform grid search
+        heuristic_type: str
+          Can be `'euclidean'`, `'manhattan'`, or `'chebyshev'`
+        max_steps_astar: int
+          Max. no. of steps for 1 run of A* search
+        max_steps_repeated: int
+          Max. no. of steps for 1 run of Repeated A* search
+        """
 
         # Exit condition
         if max_steps_repeated is None:
