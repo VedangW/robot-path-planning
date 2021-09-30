@@ -2,7 +2,7 @@ import heapq
 
 import numpy as np
 
-from rpp.a_star_utils import grid_path, get_valid_children, heuristic
+from rpp.a_star_utils import grid_path, get_valid_children, heuristic, neighbourhood, is_open_cell
 from rpp.node import Node
 
 
@@ -119,3 +119,73 @@ def a_star_search(start, goal, grid, heuristic_type,
             recency_counter += 1
 
     return [], exit_status, num_cells_popped
+
+
+def move_and_record(start, goal, grid, planned_path, knowledge, nbhd_type="compass"):
+    """
+    Moves the robot along the path and records the environment as it travels.
+    If a block is encountered, returns the last unblocked location.
+
+    Parameters
+    ----------
+    start: (int, int)
+      The start coordinates in the grid. Between (0, 0) and
+      (grid.shape[0]-1, grid.shape[1]-1).
+    goal: (int, int)
+      The goal coordinates in the grid. Limits are similar to start.
+    planned_path: List[(int, int)]
+      List of coordinates (including start and end) to visit.
+    knowledge: 2D np.array
+      Represents the knowledge of the agent. knowledge[x][y] = 1 if
+      the agent knows there exists a block at position (x, y) and is 0 otherwise.
+    nbhd_type: str
+      `'compass'` if the agent can see in all 4 directions while moving and
+      `'directional'` if the agent can see only in the direction it is moving in
+
+    Returns
+    -------
+    final_node: (int, int)
+      The last unblocked node visited or the goal node.
+    knowledge: 2D np.array
+      Updated knowledge array.
+    steps: int
+      Number of steps taken along the path.
+    last_open_cell: (int, int)
+      The last cell seen with no. of unblocked neighbours >= 3
+    """
+
+    if not planned_path:  # Planned path is empty
+        raise ValueError("Planned path cannot be empty.")
+
+    if planned_path[0] != start:  # Planned path and start don't coincide
+        raise ValueError("Planned path doesn't start with 'start'! planned_path[0] =",
+                         planned_path[0], "start =", start)
+
+    steps = 0
+    last_open_cell = None
+
+    # Start moving
+    for i in range(len(planned_path)):
+        cell = planned_path[i]
+
+        # If cell is blocked, return the last known location
+        if grid[cell[0]][cell[1]] == 1:
+            knowledge[cell[0]][cell[1]] = 1
+            return planned_path[i - 1], knowledge, steps, last_open_cell
+
+        # Find all neighbouring cells and update knowledge
+        parent_coords = planned_path[i - 1] if i - 1 > 0 else tuple(
+            np.array(cell) - (np.array(planned_path[i + 1]) - np.array(cell)))
+        nbhd = neighbourhood(cell, grid.shape[0], grid.shape[1], nbhd_type=nbhd_type, parent_coords=parent_coords)
+
+        # 'See' the whole neighbourhood
+        for nbr in nbhd:
+            knowledge[nbr[0]][nbr[1]] = grid[nbr[0]][nbr[1]]
+
+        # If this cell is open, update last_open_cell
+        if is_open_cell(cell, knowledge):
+            last_open_cell = cell
+
+        steps += 1
+
+    return planned_path[i], knowledge, steps, last_open_cell
