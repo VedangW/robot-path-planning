@@ -8,7 +8,7 @@ from rpp.node import Node
 
 def a_star_search(start, goal, grid, heuristic_type,
                   visited, knowledge, max_steps=None,
-                  nbhd="compass", epsilon=1.):
+                  epsilon=1.):
     """
     Executes A* search on a grid.
 
@@ -30,9 +30,6 @@ def a_star_search(start, goal, grid, heuristic_type,
       the agent knows there exists a block at position (x, y) and is 0 otherwise.
     max_steps: int or None
       Max. number of times we pop a Node from the Fringe
-    nbhd: str
-      `'compass'` if the agent can see in all 4 directions, `'directional'` if the
-      agent can only see in the direction it is moving in.
     epsilon: float
       Weight given to the heuristic function while calculating the priority f. Used as:
       f(n) = g(n) + epsilon*h(n)
@@ -51,7 +48,6 @@ def a_star_search(start, goal, grid, heuristic_type,
     TODO
     ----
     - num_cells_popped == steps? Remove num_cells_popped and use steps instead
-    - Remove the `nbhd` parameter since the agent can search in all 4 directions always
     - Remove the `grid` parameter since this is not required
     - Implement a separate `Fringe` class
     """
