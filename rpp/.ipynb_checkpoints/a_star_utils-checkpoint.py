@@ -218,3 +218,43 @@ def is_open_cell(cell, knowledge):
     return False
 
 
+def sense_around_cell(cell, knowledge):
+    """
+    Senses around a cell and returns the count of the number of cells and count of the sensed blocked cells around it.
+
+    Parameters
+    ----------
+    cell: (int, int)
+        Coordinates of the cell for which to check
+    knowledge: 2D np.array
+        Represents the knowledge of the agent. knowledge[x][y] = 1 if
+        the agent knows there exists a block at position (x, y) and is 0 otherwise.
+    """
+
+    # Get neighbourhood of the cell
+    
+    x, y = cell.position
+
+    #east, south-east, south, south-west, west, north-west, north, north-east - all 8 directions
+    # Get possible cells
+    possible_cells = [(x + 1, y), (x + 1, y + 1), (x, y + 1), (x - 1, y + 1), (x - 1, y), (x - 1, y - 1), (x, y - 1), (x + 1, y - 1)]
+    
+    nbhd_count = 0
+    blocked_count = 0 
+    for p_cell in possible_cells:
+        if (0 <= cell[0] <= num_rows - 1) and 0 <= cell[1] <= num_cols - 1
+
+    # Remove cells outside boundaries
+    possible_cells = [cell for cell in possible_cells if
+                      0 <= cell[0] <= num_rows - 1 and 0 <= cell[1] <= num_cols - 1]
+        
+    nbhd = neighbourhood(cell, knowledge.shape[0], knowledge.shape[1])
+
+    # Retain only the unblocked ones
+    unblocked = [nbr for nbr in nbhd if knowledge[nbr[0]][nbr[1]] != 1]
+
+    # Check length of unblocked cells
+    if len(unblocked) >= 3:
+        return True
+
+    return False
