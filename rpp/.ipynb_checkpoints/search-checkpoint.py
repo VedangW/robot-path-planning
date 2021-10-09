@@ -5,7 +5,6 @@ import numpy as np
 from rpp.a_star_utils import grid_path, get_valid_children, heuristic, neighbourhood, is_open_cell
 from rpp.node import Node
 
-
 def a_star_search(start, goal, grid, heuristic_type,
                   visited, knowledge, max_steps=None,
                   epsilon=1.):
@@ -204,7 +203,6 @@ def sense_and_update(cell, grid, knowledge):
     knowledge[x][y]['n_x'] = nbhd_count
     knowledge[x][y]['c_x'] = blocked_count
     knowledge[x][y]['visited'] = True
-    knowledge[x][y]['blocked'] = False
     
     return knowledge
 
@@ -261,7 +259,8 @@ def move_and_record(start, goal, grid, planned_path, knowledge, nbhd_type="compa
         # If cell is blocked, return the last known location
         if grid[cell[0]][cell[1]] == 1:
             bumped += 1
-            knowledge[cell[0]][cell[1]] = 1
+            # knowledge[cell[0]][cell[1]] = 1
+            knowledge[cell[0]][cell[1]]['blocked'] = True
             return planned_path[i - 1], knowledge, steps, last_open_cell, bumped
 
         # TODO: collect data and update knowledge for each cell
@@ -467,10 +466,12 @@ class RepeatedAStar:
             max_steps_repeated = grid.shape[0] * grid.shape[1]
 
         # Initialize visited matrix, knowledge matrix and planned_path array
-        # knowledge = np.zeros(grid.shape)
+        knowledge = []
         for i in len(grid.shape[0]):
+            row = []
             for j in len(grid.shape[1]):
-                knowledge[i][j] = dict(n_x=0, visited=False, state=-1, c_x=0, b_x=0, e_x=0, h_x=0)
+                row.append(dict(n_x=0, blocked=False, visited=False, state=-1, c_x=0, b_x=0, e_x=0, h_x=0))
+            knowledge.append(row)
 
         # Start
         while not self.successfully_completed:

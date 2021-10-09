@@ -12,8 +12,8 @@ def is_unvisited_and_unblocked(coords, state):
       Coordinates of the cell to check
     state: (2D np.array, 2D np.array, 2D np.array)
       The elements are passed in the following order:
-        `knowledge` - Represents the knowledge of the agent. knowledge[x][y] = 1 if
-          the agent knows there exists a block at position (x, y) and is 0 otherwise.
+        `knowledge` - Represents the knowledge of the agent. knowledge[x][y]['blocked'] = True if
+          the agent knows there exists a block at position (x, y) and is False otherwise.
         `visited` - Represents which nodes the agent has already expanded. visited[x][y] = 1 if
           the agent has already expanded Node at (x, y) and 0 otherwise.
         `in_fringe` - Represents if the node is in the fringe already. in_fringe[x][y] = 1
@@ -28,8 +28,9 @@ def is_unvisited_and_unblocked(coords, state):
     x, y = coords
     knowledge, visited, _ = state
 
+    # TODO: make changes to knowledge/visited operation
     # Return false if cell is blocked or already visited
-    if knowledge[x][y] != 0 or visited[x][y] != 0:
+    if knowledge[x][y]['blocked'] or visited[x][y] != 0:
         return False
 
     return True
@@ -108,8 +109,8 @@ def get_valid_children(coords, parent, num_rows, num_cols, state):
       No. of columns in the grid.
     state: (2D np.array, 2D np.array, 2D np.array)
       The elements are passed in the following order:
-        `knowledge` - Represents the knowledge of the agent. knowledge[x][y] = 1 if
-          the agent knows there exists a block at position (x, y) and is 0 otherwise.
+        `knowledge` - Represents the knowledge of the agent. knowledge[x][y]['blocked'] = True  if
+          the agent knows there exists a block at position (x, y) and is False otherwise.
         `visited` - Represents which nodes the agent has already expanded. visited[x][y] = 1 if
           the agent has already expanded Node at (x, y) and 0 otherwise.
         `in_fringe` - Represents if the node is in the fringe already. in_fringe[x][y] = 1
