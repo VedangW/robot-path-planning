@@ -1,6 +1,8 @@
 # Robot-Path-Planning
 Traversal of robots/AI agents through mazes using Informed Search, Logical & Probabilistic Inference, and Machine Learning.
 
+<img src="images/sample_traversal_rpp.png" alt="SampleTraversal.png" width="550"/>
+
 ### Introduction
 
 Designing Agents which can traverse mazes has immense applications in AI, Robotics, etc. We use 4 main categories of algorithms for this purpose:
