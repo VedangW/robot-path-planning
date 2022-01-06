@@ -1,7 +1,7 @@
 # Robot-Path-Planning
 Traversal of robots/AI agents through mazes using Informed Search, Logical & Probabilistic Inference, and Machine Learning.
 
-![Sample Traversal](images/sample_traversal_rpp.png)
+<img src="images/sample_traversal_rpp.png" alt="SampleTraversal.png" width="550"/>
 
 ### Introduction
 
